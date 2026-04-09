@@ -13,7 +13,8 @@ input { padding: 10px; font-size: 16px; }
 </head>
 
 <body>
-
+<iframe name="hidden_iframe" style="display:none;"></iframe>
+  
 <h2>Votación Centro de Estudiantes</h2>
 
 <input id="codigo" placeholder="Ingresa tu código"><br><br>
@@ -29,10 +30,6 @@ input { padding: 10px; font-size: 16px; }
 const scriptURL = "https://script.google.com/macros/s/AKfycbw_bmcpQgFeIXT_aBt2ZSvJqis4M4iJdWhkUcVp7gad5uYkSxDyOEAb48E1izZknMct/exec";
 
 function votar(opcion) {
-
-alert("Botón funcionando");
-  console.log("Enviando voto...");
-  
   const codigo = document.getElementById("codigo").value;
 
   if (!codigo) {
@@ -40,29 +37,29 @@ alert("Botón funcionando");
     return;
   }
 
-  fetch(scriptURL, {
-  method: "POST",
-  body: JSON.stringify({
-    codigo: codigo,
-    voto: opcion
-  })
-})
-.then(res => res.json())
-.then(data => {
-  console.log(data);
+  mensaje.textContent = "Enviando voto...";
 
-  if (data.status === "ok") {
-    mensaje.textContent = "✅ Voto registrado";
-    cargarContador();
-  } else if (data.status === "usado") {
-    mensaje.textContent = "⚠️ Código ya usado";
-  } else {
-    mensaje.textContent = "❌ Código inválido";
-  }
-})
-.catch(err => {
-  console.error("ERROR:", err);
-});
+  const form = document.createElement("form");
+  form.method = "POST";
+  form.action = scriptURL;
+  form.target = "hidden_iframe";
+
+  const inputCodigo = document.createElement("input");
+  inputCodigo.name = "codigo";
+  inputCodigo.value = codigo;
+
+  const inputVoto = document.createElement("input");
+  inputVoto.name = "voto";
+  inputVoto.value = opcion;
+
+  form.appendChild(inputCodigo);
+  form.appendChild(inputVoto);
+
+  document.body.appendChild(form);
+  form.submit();
+
+  mensaje.textContent = "✅ Voto enviado";
+}
 
 function cargarContador() {
   fetch(scriptURL + "?contador=true")
