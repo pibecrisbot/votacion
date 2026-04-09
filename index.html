@@ -28,7 +28,7 @@ input { padding: 10px; font-size: 16px; }
 
 const scriptURL = "https://script.google.com/macros/s/AKfycby4ZwKvvDrCSHn-C4AK3o6CpkvLytEU7_c68VEx5qQj2mT3ZrBhgrHtDG4xEfaVYfR2/exec";
 
-function (opcion) {
+function votar(opcion) {
   const codigo = document.getElementById("codigo").value;
 
   if (!codigo) {
@@ -37,12 +37,12 @@ function (opcion) {
   }
 
   fetch(scriptURL, {
-  method: "POST",
-  headers: {"Content-Type": "application/json"},
-  body: JSON.stringify({ codigo: codigo, voto: opcion })
-})
-.then(res => res.json())
-.then(data => {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ codigo: codigo, voto: opcion })
+  })
+  .then(res => res.json())
+  .then(data => {
 
     if (data.status === "ok") {
       mensaje.textContent = "Voto registrado";
@@ -70,5 +70,7 @@ cargarContador();
 
 </script>
 
+</body>
+</html>
 </body>
 </html>
