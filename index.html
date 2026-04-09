@@ -41,10 +41,13 @@ alert("Botón funcionando");
   }
 
   fetch(scriptURL, {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({ codigo: codigo, voto: opcion })
-  })
+  method: "POST",
+  headers: {
+    "Content-Type": "text/plain" // 👈 CLAVE PARA EVITAR PREFLIGHT
+  },
+  body: JSON.stringify({ codigo: codigo, voto: opcion })
+})
+    
   .then(res => res.json())
   .then(data => {
 
