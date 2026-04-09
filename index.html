@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Votación</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body { font-family: Arial; text-align: center; padding: 20px; }
+button { padding: 15px; margin: 10px; font-size: 18px; }
+input { padding: 10px; font-size: 16px; }
+</style>
+</head>
+
+<body>
+
+<h2>Votación Centro de Estudiantes</h2>
+
+<input id="codigo" placeholder="Ingresa tu código"><br><br>
+
+<button onclick="votar('Apruebo')">Apruebo</button>
+<button onclick="votar('Rechazo')">Rechazo</button>
+
+<p id="mensaje"></p>
+<p>Total votos: <span id="contador">0</span></p>
+
+<script>
+
+const scriptURL = "https://script.google.com/macros/s/AKfycby4ZwKvvDrCSHn-C4AK3o6CpkvLytEU7_c68VEx5qQj2mT3ZrBhgrHtDG4xEfaVYfR2/exec";
+
+function votar(opcion) {
+  const codigo = document.getElementById("codigo").value;
+
+  if (!codigo) {
+    mensaje.textContent = "Ingresa tu código";
+    return;
+  }
+
+  fetch(scriptURL, {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ codigo: codigo, voto: opcion })
+  })
+  .then(res => res.json())
+  .then(data => {
+
+    if (data.status === "ok") {
+      mensaje.textContent = "Voto registrado";
+      cargarContador();
+    }
+    else if (data.status === "usado") {
+      mensaje.textContent = "Código ya usado";
+    }
+    else {
+      mensaje.textContent = "Código inválido";
+    }
+
+  });
+}
+
+function cargarContador() {
+  fetch(scriptURL + "?contador=true")
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById("contador").textContent = data.total;
+    });
+}
+
+cargarContador();
+
+</script>
+
+</body>
+</html>
