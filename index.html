@@ -18,7 +18,7 @@ input { padding: 10px; font-size: 16px; }
 
 <input id="codigo" placeholder="Ingresa tu código"><br><br>
 
-<button onclick="votar('Apruebo')">Apruebo</button>
+<button onclick="votar(alert("Botón funcionando");'Apruebo')">Apruebo</button>
 <button onclick="votar('Rechazo')">Rechazo</button>
 
 <p id="mensaje"></p>
@@ -28,7 +28,7 @@ input { padding: 10px; font-size: 16px; }
 
 const scriptURL = "https://script.google.com/macros/s/AKfycby4ZwKvvDrCSHn-C4AK3o6CpkvLytEU7_c68VEx5qQj2mT3ZrBhgrHtDG4xEfaVYfR2/exec";
 
-function votar(opcion) {
+function (opcion) {
   const codigo = document.getElementById("codigo").value;
 
   if (!codigo) {
