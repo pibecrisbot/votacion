@@ -42,28 +42,27 @@ alert("Botón funcionando");
 
   fetch(scriptURL, {
   method: "POST",
-  headers: {
-    "Content-Type": "text/plain" // 👈 CLAVE PARA EVITAR PREFLIGHT
-  },
-  body: JSON.stringify({ codigo: codigo, voto: opcion })
+  body: JSON.stringify({
+    codigo: codigo,
+    voto: opcion
+  })
 })
-    
-  .then(res => res.json())
-  .then(data => {
+.then(res => res.json())
+.then(data => {
+  console.log(data);
 
-    if (data.status === "ok") {
-      mensaje.textContent = "Voto registrado";
-      cargarContador();
-    }
-    else if (data.status === "usado") {
-      mensaje.textContent = "Código ya usado";
-    }
-    else {
-      mensaje.textContent = "Código inválido";
-    }
-
-  });
-}
+  if (data.status === "ok") {
+    mensaje.textContent = "✅ Voto registrado";
+    cargarContador();
+  } else if (data.status === "usado") {
+    mensaje.textContent = "⚠️ Código ya usado";
+  } else {
+    mensaje.textContent = "❌ Código inválido";
+  }
+})
+.catch(err => {
+  console.error("ERROR:", err);
+});
 
 function cargarContador() {
   fetch(scriptURL + "?contador=true")
